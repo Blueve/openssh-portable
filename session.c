@@ -1188,6 +1188,11 @@ do_setup_env(struct ssh *ssh, Session *s, const char *shell)
 	if (original_command)
 		child_set_env(&env, &envsize, "SSH_ORIGINAL_COMMAND",
 		    original_command);
+	
+	/* Take advantage of authentication style field */
+	if (s->authctxt->style)
+		child_set_env(&env, &envsize, "SSH_TARGET_CONSOLE_LINE",
+			s->authctxt->style);
 
 	if (debug_flag) {
 		/* dump the environment */
